@@ -1,31 +1,72 @@
-\section{Abschnitt 1}
+\section{Einleitung}
 %for reference to this section
-\label{section:Introduction}
+\label{section:Einleitung}
 
-Text mit beliebigen Sonderzeichen in UTF-8 ohne BOM \ldots
-\ldots \textbf{hervorgehobener Text} \ldots
-\ldots \texttt{computerFunction}\footnote{
-	Fußnote 1
-}
+\subsection{Forschungsgebiet}
+\subsection{Relevanz}
+\subsection{Forschungsfrage}
+\subsection{Aufbau der Arbeit}
+
+\section{Die Taratoga Formel}
+
+Text mit beliebigen Sonderzeichen in UTF-8 ohne BOM, 
+\textbf{hervorgehobener Text},
+\texttt{computerFunction}, kleine mathematische Formel im Text $\sum_{i=0}^n i^2$
 \ldots
-\ldots mathematische Formel im Text $\sum_{i=0}^n i^2$
-\ldots
-\ldots
 
-Referenz auf Unterabschnitt \ref{subsection:Coding} der Arbeit, automatisch
-richtig nummeriert.
+\subsection{Querverweie, Literaturverweise, Fußnoten}
+Für die in Kapitel \ref{section:Einleitung} definierte Forschungsfrage
+ist der Begriff \textbf{Taratoga} zentral. In diesem Kapitel wird
+der Begriff definiert.
 
-Literaturverweis auf eine andere Arbeit \autocite[]{McConnell:2004:CCS:1096143}.
-Achtung: nur zitierte Literatur wird im Literaturverzeichnis
-angeführt.\footnote{
-	Fußnote 2
-}
+Taratoga\footnote{Taratoga ist ein Wort aus den Sterntagebüchern von Stanislaw Lem} wird in der Informatik
+seit den 1970er Jahren in diskutiert in \autocites{McConnell:2004}{Vandevoorde:2002},
+das Standardwerk, das auch in der Lehre verwendet wird, ist 
+\autocite{Tanenbaum:2003}.
 
-Infos zu \LaTeX\ unter folgender URL Referenz:
-\url{http://en.wikibooks.org/wiki/LaTeX}
+Eine erste kompakte Definition findet man bei Renaud: 
+
+\selectlanguage{english}
+\begin{quote}
+``This quote is completele made up. ... If you do this (make up quotes)
+it will end badly for you. ''
+\autocite[S.305]{Renaud:2004}
+\end{quote}
+
+\textcite{Souders:2007} hat gemessen, dass Performance-Probleme von Webseiten oft im Frontend liegen.
+Wenn wir ihn so zitieren, wollen wir seinen Namen nicht in der Klammer haben, sondern davor. das geht
+mit \texttt{textcite} statt \texttt{autocite}.
+
+Besonders praktisch sind RFCs zu zitieren: wir haben ein vollständiges
+BibTeX-File für alle, und können damit HTTP definieren \autocite{rfc1945}.
+
+Achtung: nur zitierte Literatur wird im Literaturverzeichnis angeführt.
+
+Wie soll man mit Doku zu einem verwendeten Produkt umgehen?
+Entweder in eine Fußnote verbannen, wie die \LaTeX\ Dokumentation\footnote{http://en.wikibooks.org/wiki/LaTeX},
+oder richtig zitieren wie \autocite[]{jQueryDoc}.
+
+Manchmal handelt der Text von URLs, zum Beispiel um zu
+beschreiben wie http oder https in einer URL wie 
+\url{http://example.com} verwendet werden.
+
+Die Wikipedia ist immer der \textbf{Anfang}  einer Recherche, 
+nicht das Ende. Für Neben-Themen ist sie aber ganz praktisch, 
+man kann zum Beispiel für BibTeX und LaTeX darauf verweisen \autocites[BibTeX]{wikipedia:bibtex}[LaTeX]{wikipedia:latex}.
+
+\subsection{Quellen-Arten}
+
+\begin{enumerate}
+\item in einem Buch \autocite[580-605]{Tanenbaum:2003}
+\item ein Artikel in einem Journal \autocite{Renaud:2004}
+\item eine Artikel aus einem Proceedingsband \autocite{Bailey:1981}
+\item eine Beitrag auf einer Konferenz ohne richtig veröffentlichen Proceedingsband \autocite{Yacoub:1998}
+\item ein RFC \autocite{rfc1945}
+\item eine Bachelorarbeit bei MMT \autocite{Schmidt:2011}
+\end{enumerate}
 
 
-\subsection{Unterabschnitt 1}
+\subsection{Bilder, Diagramme, Grafiken}
 
 % h = try to place the figure Here
 % t = try to place the figure at the Top of a page
@@ -60,8 +101,10 @@ Infos zu \LaTeX\ unter folgender URL Referenz:
 Unterstützte Pixelgraphikformate: PNG, JPEG, PDF.
 Angabe von height oder width meist wichtig.
 
-Referenz auf Abbildung \ref{figure:PixelImages} mit allen Teilbildern.
-Referenz auf Unterabbildung \ref{subfigure:Julia-Fractal}.
+Jede Abbildung die Sie zeigen erkläutern Sie auch im Text. Dabei verweisen Sie auf die
+Abbildung mit \texttt{\\ref}. Abbildung \ref{figure:PixelImages} stellt zwei Bilder gegenüber,
+ohne dass das Sinn macht.  Unterabbildung \ref{subfigure:Julia-Fractal} zeigt einen
+Ausschnitt aus dem Julia-Fraktal in der schwarz-weiss Darstellung.
 
 \begin{figure}[h]
 	\centering
@@ -83,7 +126,7 @@ werden.
 Unterstütztes Vektorgraphikformat: PDF. EPS muss konvertiert werden.
 
 
-\subsection{Unterabschnitt 2}
+\subsection{Codebeispiele, etc}
 %for references to this subsection
 \label{subsection:Coding}
 
@@ -112,26 +155,8 @@ Bei Codeausschnitten immer die erste Zeilennummer passend zum File angeben.
 	SELECT * FROM users WHERE id = 1;
 \end{lstlisting}
 
-\subsubsection{Unterunterabschnitt i}
 
-Wörtliches Zitat:
-%select proper language if not in German
-\selectlanguage{english}
-\begin{quote}
-``... Erwin Unruh discovered that templates can be used to compute
-something at compile time. ...
-
-... The intriguing part of this exercise, however, was that the
-production of the prime numbers was performed by the compiler during
-the compilation process and not at run time. ...''
-
-\autocite[305]{Vandevoorde:2002}
-\end{quote}
-%select German again (note ngerman stands for New German)
-\selectlanguage{ngerman}
-
-
-\subsection{Unterabschnitt b}
+\subsection{Aufzählerei}
 
 \begin{enumerate}
 	\item Punkt 1
@@ -152,7 +177,7 @@ the compilation process and not at run time. ...''
 \end{itemize}
 
 
-\subsection{Unterabschnitt c}
+\subsection{Tabelle}
 
 \begin{table}[h]
 	\centering
@@ -170,7 +195,7 @@ the compilation process and not at run time. ...''
 
 Referenz auf Tabelle \ref{table:Quaternions}.
 
-\section{Abschnitt 2}
+\section{Formeln}
 \label{section:MathematicalStuff}
 
 Sei $f(x)$ eine stetige Funktion, so ist die \textbf{Fourier Transformierte}
