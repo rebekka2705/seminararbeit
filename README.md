@@ -1,70 +1,29 @@
 LaTeX Template 
 ==============
 
-Building
---------
+This template can be used for both the Bachelor Thesis and
+the Master Thesis.
 
-### All
+To switch between templates go to the top of main.tex and change the document class options:
 
-Linux:	  make all
-Windows:  makeall.bat
+* paper =  Bachelor thesis 1
+* bachelorthesis = Bachelor thesis 2
+* masterthesis = Master thesis
 
-builds the bibliography according to all cites and creates the PDF file
-	Bakk1.pdf
-in the build directory.
-Note: this runs pdflatex 3 times total to get all references right.
+To switch the language of the document go to the top of main.tex and change the document class options: 
 
-### Quick 
-Linux:    make quick
-Windows:  makequick.bat
+* english 
+* ngerman
 
-only runs pdflatex once. Suitable for small changes and usually leaves
-unresolved references.
-
-### Install 
-Linux:    make install
-Windows:  install.bat
-
-copies the file Bakk1.pdf from the build directory into the main directory
-to protect it from future cleaning.
-
-### Clean 
-Linux:    make clean
-Windows:  clean.bat
-
-cleans alls intermediate files and files in the build directory.
-Use clean for major changes of your document structure including
-modifications of the bibliography.
+The document adapts text of the title page, affidavit and references according to the language chosen.
 
 
-Editing
--------
+Files to change for your thesis:
 
-### Titlepage 
-Open the file ''Title.tex'' and edit the following items:
-* title
-* your name
-* your student id
-* supervisor
-* optional second supervisor
-* date of publication
-* optional lock flag if your work is to be kept confidential until a certain date
+* main.tex: set up document class and add any packages you may need. The rest should be left untouched.
+* _configuration.tex: configuration file of the project (author name, advisor name, etc.)
+* abstract.tex: the English abstract
+* kurzfassung.tex: the German abstract
+* body.tex: the main text of the thesis
+* appendix.tex: the optional appendix
 
-### Abstract
-Open the file ''Abstract.tex''.
-* write your English abstract
-* give English keywords
-* write your German abstract
-* give German keywords
-
-### Body
-Open the file ''Body.tex''.
-* write your thesis...
-* use section/subsection/subsubsection for your document structure
-* see the template file for further LaTeX usage hints
-
-### Bibliography
-Open the file ''Bibliography.bib''.
-* Copy and paste your bibtex entries from internet/library/bibtex archives.
-* use a unique code for each entry
-* use this code within the ''\cite'' LaTeX command
