@@ -14,6 +14,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
 \usepackage{makecell}
+\usepackage[anythingbreaks]{breakurl}
 
 \usepackage{amsmath}
 \usepackage[autostyle,german=guillemets]{csquotes}
@@ -113,7 +114,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-% TODO switch for english, german
+
 \selectthesislanguage
 
 \pagenumbering{gobble}
@@ -141,32 +142,34 @@
 \endgroup
 \fi
 
-\ifmmtpaper\else
+%\ifmmtpaper\else
     
     \newpage
     \selectlanguage{ngerman}
     \section*{Kurzfassung}
     \input{kurzfassung}
-    \ifmmtmasterthesis
     
+    \ifmmtmasterthesis    
     \vspace*{0.5cm} 
     \textbf{Schlüsselwörter:~} \keywordsgerman
     \fi
+    
     \newpage
     \selectlanguage{english}
     \section*{Abstract}
     \input{abstract}
-    \ifmmtmasterthesis
-        
+    
+    \ifmmtmasterthesis        
     \vspace*{0.5cm} 
     \textbf{Keywords:~} \keywordsenglish
     \fi
+    
     \selectthesislanguage
     
     \newpage
     \tableofcontents
 
-\fi
+%\fi
 
 \mmtcolumnmode % switch back to column formatting of stylesheet
 
@@ -182,16 +185,18 @@
 
 %\input{acknowledgements}
 
-\ifmmtpaper\else % only use the following for thesis format
+%\ifmmtpaper\else % only use the following for thesis format
 
 \newpage
+\onecolumn    
+\input{abbreviations}
 \listoffigures
 \lstlistoflistings
 \listoftables
 
 \newpage
 
-\fi
+%\fi
 
 \printbibliography
 
