@@ -106,8 +106,15 @@
 
 %% Abstract section for paper format.
 \abstract{
-    \input{abstract}
+    \ifmmtlanguagegerman 
+        \selectlanguage{ngerman}
+        \input{kurzfassung}
+    \else 
+        \selectlanguage{english}
+        \input{abstract}
+    \fi
 }
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%% START OF THE PAPER %%%%%%%%%%%%%%%%%%%%%%
