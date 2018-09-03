@@ -2,8 +2,8 @@
 % generated text is translated accordingly.
 % use \selectthesislanguage in body.tex to switch to default language
 
-\documentclass[ngerman, paper]{mmt} % use for BA1
-%\documentclass[english, bachelorthesis]{mmt} % use for BA2
+\documentclass[english, paper]{mmt} % use for BA1
+%\documentclass[ngerman, bachelorthesis]{mmt} % use for BA2
 %\documentclass[ngerman, masterthesis]{mmt} % use for Master thesis
 
 \usepackage{mathptmx}
@@ -14,7 +14,16 @@
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
 \usepackage{makecell}
-\usepackage[anythingbreaks]{breakurl}
+\usepackage[toc,page]{appendix}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+\usepackage{breakurl}
 
 \usepackage{amsmath}
 \usepackage[autostyle,german=guillemets]{csquotes}
@@ -115,13 +124,12 @@
     \fi
 }
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%% START OF THE PAPER %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-
+% TODO switch for english, german
 \selectthesislanguage
 
 \pagenumbering{gobble}
@@ -155,27 +163,30 @@
     \selectlanguage{ngerman}
     \section*{Kurzfassung}
     \input{kurzfassung}
+    \ifmmtmasterthesis
     
-    \ifmmtmasterthesis    
     \vspace*{0.5cm} 
     \textbf{Schlüsselwörter:~} \keywordsgerman
     \fi
-    
     \newpage
     \selectlanguage{english}
     \section*{Abstract}
     \input{abstract}
-    
-    \ifmmtmasterthesis        
+    \ifmmtmasterthesis
+        
     \vspace*{0.5cm} 
     \textbf{Keywords:~} \keywordsenglish
     \fi
-    
     \selectthesislanguage
     
     \newpage
     \tableofcontents
-
+    
+    \newpage
+    \listoffigures
+    \lstlistoflistings
+    \listoftables
+    
 %\fi
 
 \mmtcolumnmode % switch back to column formatting of stylesheet
@@ -192,20 +203,17 @@
 
 %\input{acknowledgements}
 
-%\ifmmtpaper\else % only use the following for thesis format
-
-\newpage
-\onecolumn    
-\input{abbreviations}
-\listoffigures
-\lstlistoflistings
-\listoftables
-
-\newpage
-
-%\fi
+\ifmmtpaper
 
 \printbibliography
+
+\else % only use the following for thesis format
+
+\newpage
+\printbibliography
+
+\fi
+
 
  % group open
 \ifmmtpaper 
