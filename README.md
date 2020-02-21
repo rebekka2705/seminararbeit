@@ -1,14 +1,14 @@
 LaTeX Template 
 ==============
 
-This template can be used for both the Bachelor Thesis and
-the Master Thesis.
+This template can be used for the seminar paper, bachelor thesis and
+the master Thesis.
 
 To switch between templates go to the top of main.tex and change the document class options:
 
-* `paper` =  Bachelor thesis 1
-* `bachelorthesis` = Bachelor thesis 2
-* `masterthesis` = Master thesis
+* `paper` =  seminar paper
+* `bachelorthesis` = bachelor thesis 2
+* `masterthesis` = master thesis
 
 To switch the language of the document go to the top of main.tex and change the document class options: 
 
