@@ -22,11 +22,11 @@ Files to change for your paper:
 
 * `_configuration.tex`: configuration file of the project (author name, advisor name, etc.)
 * `body.tex`: the main text of the thesis
+* `kurzfassung.tex`: the German abstract
 
 for bachelor and master thesis also edit:
 
 * `abstract.tex`: the English abstract
-* `kurzfassung.tex`: the German abstract
 * `appendix.tex`: the optional appendix
 
 only if you want to use advanced LaTeX features:
