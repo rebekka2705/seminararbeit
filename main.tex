@@ -149,15 +149,18 @@
     
     \pagenumbering{roman}
     
+\ifmmtpaper % does not need affidavit
+\else
     \newpage
     \input{affidavit}  % comment out for expose
+\fi
 
 % group closing
 \ifmmtpaper
 \endgroup
 \fi
 
-%\ifmmtpaper\else
+\ifmmtpaper\else  % paper does not need this stuff
     
     \newpage
     \selectlanguage{ngerman}
@@ -187,7 +190,7 @@
     \lstlistoflistings
     \listoftables
     
-%\fi
+\fi
 
 \mmtcolumnmode % switch back to column formatting of stylesheet
 
@@ -225,9 +228,13 @@
     \sectionfont{\fontsize{14}{15}\selectfont}
 \fi
 
+\ifmmtpaper\else % nicht im paper
+
 \newpage
 \onecolumn
 \input{appendix}
+
+\fi
 
 % group closing
 \ifmmtpaper
