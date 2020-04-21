@@ -18,12 +18,17 @@ To switch the language of the document go to the top of main.tex and change the 
 The document adapts text of the title page, affidavit and references according to the language chosen.
 
 
-Files to change for your thesis:
+Files to change for your paper:
 
-* `main.tex`: set up document class and add any packages you may need. The rest should be left untouched.
 * `_configuration.tex`: configuration file of the project (author name, advisor name, etc.)
+* `body.tex`: the main text of the thesis
+
+for bachelor and master thesis also edit:
+
 * `abstract.tex`: the English abstract
 * `kurzfassung.tex`: the German abstract
-* `body.tex`: the main text of the thesis
 * `appendix.tex`: the optional appendix
 
+only if you want to use advanced LaTeX features:
+
+* `main.tex`: set up document class and add any packages you may need. The rest should be left untouched.
