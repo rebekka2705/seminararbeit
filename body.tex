@@ -1,40 +1,25 @@
 %for reference to this section
-\section{Einleitung}
+\section{Introduction}
 \label{section:Introduction}
-
-Wenn man einfach nur Text schreibt, dann wird
-einfach nur Text draus, und alles ist Einfach.
-
-Wie \textcite[]{Mulloni:2010} in Ihrer Studio gezeigt haben sind falsch zugeordnete Zitate sind ganz übel.
-
-Wenn man was über HTTP erzählt muss man auch den
-Standard referenzieren.\autocite[]{RFC2616}
-
-\section{Formatierung}
-\label{section:Formatting}
+In recent years web applications have become more and more complex. Due to the growing size of applications it is difficult to satisfy all security requirements. Many applications handle confidential and sensitive data and have become a popular target for malicious attacks. A security breach could have severe consequences depending on the data that has been compromised. The OWASP Foundation\footnote{ \url{https://owasp.org/www-project-top-ten/}} provides a top ten list of web application security risks. SQL Injection, cross-site scripting or sensitive data exposure are only a few of the many issues to consider while developing. But as the implementation of security measures are a very time-consuming job, many developers are lacking the time and/or knowledge to implement those security techniques. Many web applications deployed on the Internet contain severe security vulnerabilities. Almost half of the web applications reviewed by the Web Application Security Consortium contained vulnerabilities that are considered high risk. \autocite[2]{Li2014}
+So it comes at no surprise that many security analysis tools have been developed to support developers to scan their applications, reveal bugs or to confirm their security measures they have implemented. There are different types of web security tools. Static analysis tools assess the application without executing the program. A static analysis tool analyses the code to search for e.g. syntatic errors. The analysis considers all code execution paths. Dynamic analysis on the other hand evaluates the app's behaviour during execution. For this kind of analysis specific attack vectors can be used to validate the source code. Some tools combine those techniques. \autocite[]{Lam2008}, \autocite[]{Hosek2011} 
+In this paper I would like to give an overview of different types of web security tools. Starting with a more detailed description of the top-ten web security risks and the distinction between static and dynamic analysis in the first chapter. Then I would like to explain in detail how static analysis tools like RubyX, Derailer or SPACE analyse applications \autocite[]{Chaudhuri2010} \autocite[]{Near2014} \autocite[]{Near2016}. A further important topic talking about analysis tools is symbolic execution. Many tools use this analysing technique that translates concrete values in the source code to symbolic values that are executed in an alternate runtime \autocite[]{Bocic2017} \autocite[]{Near2016} \autocite[]{Near2012}. Other tools combine the static and dynamic approach like PQL or SafeWeb or provide black box testing with no access to the source code \autocite[]{Lam2008} \autocite[]{Hosek2011} \autocite[]{Araujo2018}.
 
 
-Text mit beliebigen Sonderzeichen in UTF-8 ohne BOM \ldots
-,
-\textbf{hervorgehobener Text},
-\texttt{void}\footnote{Fußnote 1},
-mathematische Formel im Text $\sum_{i=0}^n i^2$
-\ldots
-
-Referenz auf Unterabschnitt \ref{subsection:Coding} der Arbeit, automatisch richtig nummeriert.
-
-\textcite[]{Mulloni:2010} bringen einen Literaturverweis im laufenden Text.
-
-Literaturverweise sind essentiell für eine wissenschafliche Arbeit. \autocite[]{McConnell:2004:CCS:1096143}.
-
-Achtung: nur zitierte Literatur wird im Literaturverzeichnis
-angeführt.\footnote{Fußnote 2}
 
 
-Wir verwenden \LaTeX\footnote{ \url{http://en.wikibooks.org/wiki/LaTeX}} -- und das
-ist keine Quelle, sondern blos eine URL.
+\section{Web Application Security Risks}
+\autocite[]{ElIdrissi2017}, \autocite[]{Li2014}
+\section{Static Analysis vs Dynamic Analysis}
+\subsection{Static Analysis Tools}
+\autocite[]{Chaudhuri2010}, \autocite[]{Near2014}, \autocite[]{Bocic2014}, \autocite[]{Munetoh2013a}, \autocite[]{Jovanovic2006}, \autocite[]{Munetoh2013}
+\subsection{Symbolic Execution Tools}
+\autocite[]{Chaudhuri2010}, \autocite[]{Near2014}, \autocite[]{Near2012}, \autocite[]{Nijjar2011}, \autocite[]{Near2016}, \autocite[]{Jackson2002}, \autocite[]{Bocic2016}, \autocite[]{Cadar2011}, \autocite[]{Bocic2014}
+\subsection{Dynamic Analysis Tools}
+\autocite[]{Yip2009}, \autocite[]{Felt2011}
+\subsection{Combining static and analysis Testing}
+\autocite[]{Lam2008}, \autocite[]{Hosek2011} \autocite[]{Araujo2018} 
 
-\subsection{Figures machen was sie wollen}
 
 % h = try to place the figure Here
 % t = try to place the figure at the Top of a page
@@ -42,168 +27,4 @@ ist keine Quelle, sondern blos eine URL.
 % Note that LaTeX has a sophisticated ranking algorithm to place figures.
 % It is not always easy to accept LaTeX's placing but it is harder doing it
 % manually. Just let it go ;-)
-\begin{figure}[!ht]
-	\centering
-	\subfloat[Das Julia Fraktal]{
-		\includegraphics[width=0.75\linewidth]{images/Julia-Fractal.png}
-		%for reference of this subfigure only
-		\label{subfigure:Julia-Fractal}
-	}
-	\qquad
-	\subfloat[Noise für Tinteneffekte]{
-		\includegraphics[width=0.75\linewidth]{images/Perlin-Coherent.png}
-		%for reference of this subfigure only
-		\label{subfigure:Perlin-Coherent}
-	}
-	\caption[
-		Verschiedene Pixelgraphiken\newline
-		% source url given in the table of figures
-		\small\texttt{https://mediacube.at/wiki/}
-	]{
-		Verschiedene Pixelgraphiken
-	}
-	%for reference to all subfigures
-	\label{figure:PixelImages}
-\end{figure}
 
-Unterstützte Pixelgraphikformate: PNG, JPEG, PDF.
-Angabe von height oder width meist wichtig.
-
-Referenz auf Abbildung \ref{figure:PixelImages} mit allen Teilbildern.
-Referenz auf Unterabbildung \ref{subfigure:Julia-Fractal}.
-
-%figure* stretches figure over both columns
-\begin{figure*}[t]
-	\centering
-	\includegraphics[width=0.9\textwidth]{images/KappaGamma.pdf}
-	\caption{
-		Vektorgraphik mit \LaTeX\ Beschriftung ($\kappa$, $\gamma$)
-	}
-	%for reference to this figure
-	\label{figure:KappaGammaTau}
-\end{figure*}
-
-Referenz auf Abbildung \ref{figure:KappaGammaTau}.
-
-Bei Vektorgraphik mit \LaTeX\ Beschriftung keine Skalierung mit width
-oder height verwenden!
-Vektorgraphik mit \LaTeX\ Beschriftung kann etwa mit \texttt{ipe} erstellt
-werden.
-
-Unterstütztes Vektorgraphikformat: PDF. EPS muss konvertiert werden.
-
-
-\subsection{Unterabschnitt 2}
-%for references to this subsection
-\label{subsection:Coding}
-
-\begin{lstlisting}[
-	label=listing:Main, %for reference to this listing
-	float=h,
-	caption=main.cpp,
-	firstnumber=10
-]
-int main(void) {
-	while (true) {
-	}
-	return 0;
-}
-\end{lstlisting}
-
-Wie man in Listing \ref{listing:Main} in Zeile 10 sieht, kann man die Zeilennummern im Listing absichtlich setzen, hier z.B. auf 10. In Listing \ref{listing:closure} wurde davon nicht Gebrauch gemacht. In diesem Fall beginnt die Nummerierung bei 1.
-
-\begin{lstlisting}[
-    label=listing:closure,
-	float=h,
-	caption=Closure in Javascript,
-	language=JavaScript
-]
-function foo(x,y) {
-    let i = x;
-    return function(a) {
-        return i * 2;
-    }
-}
-\end{lstlisting}
-
-
-\subsubsection{Unterunterabschnitt i}
-
-Wörtliches Zitat:
-%select proper language if not in German
-\selectlanguage{english}
-\begin{quote}
-``Erwin Unruh discovered that templates can be used to compute
-something at compile time. [...] The intriguing part of this exercise, however, was that the production of the prime numbers was performed by the compiler during the compilation process and not at run time.''
-
-\autocite[305]{Bosch2014}
-\end{quote}
-%select German again or the language that you were using before (note ngerman stands for New German)
-%\selectlanguage{ngerman}
-\selectthesislanguage
-
-
-\subsection{Unterabschnitt b}
-
-\begin{enumerate}
-	\item Punkt 1
-	\begin{enumerate}
-		\item Unterpunkt 1
-		\item Unterpunkt 2
-	\end{enumerate}
-	\item Punkt 2
-\end{enumerate}
-
-\begin{itemize}
-	\item Punkt 1
-	\begin{itemize}
-		\item Unterpunkt 1
-		\item Unterpunkt 2
-	\end{itemize}
-	\item Punkt 2
-\end{itemize}
-
-
-\subsection{Unterabschnitt c}
-
-\begin{table}[ht]
-	\centering
-	\begin{tabular}{r|rrr}
-		    & $i$ & $j$ & $k$ \\ \hline
-		$i$ &$-1$ & $k$ &$-j$ \\
-		$j$ &$-k$ &$-1$ & $i$ \\
-		$k$ & $j$ &$-i$ &$-1$
-	\end{tabular}
-	\caption{
-		Multiplikationstabelle für Quaternionen
-	}
-	\label{table:Quaternions}
-\end{table}
-
-Referenz auf Tabelle \ref{table:Quaternions}.
-
-\section{Abschnitt 2}
-\label{section:MathematicalStuff}
-
-Sei $f(x)$ eine stetige Funktion, so ist die \textbf{Fourier Transformierte}
-$F(\omega)$ wie folgt definiert:
-\begin{equation}
-\label{equation:FourierDefinition}
-	F(\omega) = \int_{-\infty}^{\infty} f(x) e^{-i\omega t} dt
-\end{equation}
-
-Referenz auf mathematische Gleichung (\ref{equation:FourierDefinition}).
-
-Unnummerierte Gleichung:
-\begin{equation*}
-	e^{i\varphi} = \cos\varphi + i \sin\varphi
-\end{equation*}
-%you may also use \[ \] instead of \begin{equation*} and \end{equation*}
-
-Gleichungssystem:
-\begin{eqnarray}
-	g(x) = f(x - x_0) & \Leftrightarrow &
-		G(\omega) = F(\omega) e^{-i\omega x_0} \\
-	g(x) = f(x) e^{i\omega_0 x} & \Leftrightarrow &
-		G(\omega) = F(\omega - \omega_0)
-\end{eqnarray}
