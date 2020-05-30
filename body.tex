@@ -2,32 +2,61 @@
 \section{Introduction}
 \label{section:Introduction}
 In recent years, web applications have become more and more complex. Due to the growing size of applications it is difficult to satisfy all security requirements. Many applications handle confidential and sensitive data and have become a popular target for malicious attacks. A security breach could have severe consequences depending on the data that has been compromised.\newline The OWASP Foundation\footnote{ \url{https://owasp.org/www-project-top-ten/}} provides a top ten list of web application security risks. SQL Injection, cross-site scripting or sensitive data exposure are only a few of the many issues to consider while developing. But as the implementation of security measures are a very time-consuming job, many developers are lacking the time and/or knowledge to implement those security techniques. Many web applications deployed on the Internet contain severe security vulnerabilities. Almost half of the web applications reviewed by the Web Application Security Consortium contained vulnerabilities that are considered high risk \autocite[2]{Li2014}.
-So it comes as no surprise that many security analysis tools have been developed to support developers to scan their applications, reveal bugs or to confirm the security measures they have implemented.\newline There are different types of web security tools. Static analysis tools assess the application without executing the program. A static analysis tool analyses the code to search for e.g. syntatic errors. The analysis considers all code execution paths. Dynamic analysis, on the other hand, evaluates the app's behaviour during execution. For this kind of analysis specific attack vectors can be used to validate the source code. Some tools combine those techniques \autocite[]{Lam2008,Hosek2011}.\newline In this paper, I will give an overview of different types of web security tools, starting with a more detailed description of the top-ten web security risks and the distinction between static and dynamic analysis in the first chapter. Afterwards, I will explain in detail how static analysis tools like RubyX, Derailer or SPACE analyse applications \autocite[]{Chaudhuri2010, Near2014, Near2016}. Another important topic in regards to analysis tools is symbolic execution. Many tools use this analysing technique that translates concrete values in the source code to symbolic values that are executed in an alternate runtime \autocite[]{Bocic2017,Near2016,Near2012}. Other tools combine the static and dynamic approach, like PQL or SafeWeb, or provide black box testing with no access to the source code \autocite[]{Lam2008,Hosek2011,Araujo2018}.
+So it comes as no surprise that many security analysis tools have been developed to support developers to scan their applications, reveal bugs or to confirm the security measures they have implemented.\newline There are different types of web security tools. Static analysis tools assess the application without executing the program. A static analysis tool analyses the code to search for e.g. syntatic errors. The analysis considers all code execution paths. Dynamic analysis, on the other hand, evaluates the app's behaviour during execution. For this kind of analysis specific attack vectors can be used to validate the source code. Some tools combine those techniques \autocite[]{Lam2008,Hosek2011}.\newline In this paper, I will give an overview of different types of web security tools, starting with a more detailed description of the top-ten web security risks and the distinction between static and dynamic analysis in the first chapter. Afterwards, I will explain in detail how static analysis tools like RubyX, Derailer or SPACE analyse applications \autocite[]{Chaudhuri2010, Near2014, Near2016}.  Other tools combine the static and dynamic approach, like PQL or SafeWeb, or provide black box testing with no access to the source code \autocite[]{Lam2008,Hosek2011,Araujo2018}.
 
 
 
 
 \section{Web Application Security Risks}
 \autocite[]{ElIdrissi2017}, \autocite[]{Li2014}
-\section{Static Analysis vs Dynamic Analysis}
-\subsection{Static Analysis Tools}
+\section{Static Analysis Tools}
+Web Applications have been becoming more complex and growing in lines of code. To ensure the quality of the code especially with a lot of engineers working on the code base it is necessary to review and analyse code not only in regards to quality aspects but also to detect potential security vulnerabilities. However the sheer amount of code makes it impossible to completely to rely on individual coders to review the code manually. Automated analysis tools provide the service to check code for various vulnerabilities and help to detect weaknesses in the code. So called static analysis tools run through the source code without executing the program. One downside of static analysis tools is that each programming language needs a specifically designed tool. So there are already many static analysis tools in use like Rubocop\footnote{ \url{https://github.com/rubocop-hq/rubocop}} for Ruby or Pixy, a tool for PHP \autocite[]{Jovanovic2006}.\newline
+
+
+\textcite[]{Maskur2019} recently introduced a tool that uses static analysis combined with a taint analysis method. What is taint analysis? As \textcite[]{Shannon2018} explains a variable that is marked as tainted means it is potentially dangerous. It may hold data from e.g. user input and therefore it could be harmful to your application. Three important components described in taint analysis are:
+
+\begin{enumerate}
+    \item Source: everything that comes from outside your application scope, like HTTP parameters, user input or file uploads.
+    \item Sink: executes an action that may cause damage to your system like SQL queries or functions that interact with your operating system
+    \item Sanitizer: protects from untrusted input like esacping html characters or SQL query parameters
+\end{enumerate}
+
+If a source can go through a sink without sanitation this is considered a vulnerability.
+
 \autocite[]{Chaudhuri2010}, \autocite[]{Near2014}, \autocite[]{Bocic2014}, \autocite[]{Munetoh2013a}, \autocite[]{Jovanovic2006}, \autocite[]{Munetoh2013}
+
+
 \subsection{Symbolic Execution Tools}
 \autocite[]{Chaudhuri2010}, \autocite[]{Near2014}, \autocite[]{Near2012}, \autocite[]{Nijjar2011}, \autocite[]{Near2016}, \autocite[]{Jackson2002}, \autocite[]{Bocic2016}, \autocite[]{Cadar2011}, \autocite[]{Bocic2014}
-\subsection{Dynamic Analysis Tools}
+
+
+\section{Dynamic Analysis Tools}
 \autocite[]{Yip2009}, \autocite[]{Felt2011}
 
-\subsection{Hybrid Analysis Tools}
+\section{Hybrid Analysis Tools}
 Static analysis and dynamic analysis have their own individual drawbacks. As static analysis scans the code without executing the program, this means it can analyse the application quicker. But this automatically limits the extent to which the analyser can check the application. Dynamically created content and functions can not be analysed and therefore some vulnerabilities remain undetected. On the other hand dynamic analysis tools often are not provided with the source code and are only monitoring the execution. They rely on attacks vectors to identify vulnerabilities. If those vectors are wrongly constructed this could lead to false positives.
 Due to the complex nature of many modern web application hybrid analysis tools that combine static and dynamic elements try to limit the amount of undetected vulnerabilities \autocite[]{Araujo2018, Jahanshahi2018}. In this chapter I would like to provide an insight into recently developed hybrid analysis tools.
 
-\subsubsection{SQLBlock}
-\textcite[]{Jahanshahi2018} introduce in their recently published paper a tool called SQLBlock that secures a web application against various kinds of SQL Injections. Manipulating SQL queries can lead to serious database damage/manipulation or exposure of classified information to the attacker. An overview of the different categories of SQL attacks by \textcite[3ff.]{Halfond2008} states eight types.
+\subsection{SQLBlock}
+\textcite[]{Jahanshahi2018} introduce in their recently published paper a tool called SQLBlock that secures a web application against various kinds of SQL Injections. Manipulating SQL queries can lead to serious database damage/manipulation or exposure of classified information to the attacker. An overview of the different categories of SQL attacks by \textcite[3ff.]{Halfond2008} states eight types. Here a short overview of a few categories included.\newline
 
-\textbf{Tautology} \newline
-\textbf{Union Query}\newline
-\emph{Piggy-backed Query}
-\emph{Alternate Encoding}
+
+\noindent \textbf{Tautology}: Goal of this attack is to return all rows of the database table. The SQL query is manipulated in a way that the condition stated in the query always returns true. So the manipulation targets the WHERE condition of the query and attackers receive all the data of the table (e.g. adding "or 1=1" to the WHERE-condition)\autocite[3]{Halfond2008}.\newline
+
+
+\noindent\textbf{Union Query}: The attack targets vulnerable parameter with the UNION keyword to increase the amount of data to be returned. This includes data from different tables. By injecting a UNION SELECT inside a parameter the database return the union result of the queries to display more information than intended \autocite[4]{Halfond2008}.\newline
+
+
+\noindent\textbf{Piggy-backed Query}: Unlike the union query attack piggy-backed query attacks try to add multiple queries to the original one. Those attacks are not limited to a specific keyword but can include any type of SQL statement. Therefore this category of manipulation is extremely dangerous and harmful as it can delete and add data arbitrarily \autocite[4]{Halfond2008}.\newline
+
+
+\noindent\textbf{Alternate Encoding}: Standard defense techniques of SQL queries scan for special characters to prevent malicious attacks. To overcome those obstacles attackers make use of other types of encoding to insert their manipulated strings. Different layers of the application handle alternate encoding differently. So a manipulated string could be undetected. As it is almost possible to secure an application against all existing encodings those kinds of attacks have been very successful \autocite[5]{Halfond2008}.\newline
+
+SQLBlock supports object-oriented programming and as mentioned before combines static and dynamic anaylsis methods. The app is focused on PHP applications and is available as a plugin for MySQL and PHP. The prototype implementation of SQLBlock goes through four different phases to evaluate and secure the web application \autocite[1, 5]{Jahanshahi2018}.\newline
+In the first phase SQLBlock identifies and analyses the database access layer within the PHP application, this means classes and interfaces that extend the database API like PDO in PHP. Through the static analysis SQLBlock creates a class dependency graph (CDG), that is a directed graph with vertices representing the classes and interfaces, and edges that are drawn if a vertex extends another vertex or implements the interface of the other vertex. After the CDG is fully constructed SQLBlock needs to find all classes and interfaces that are connected to the database API. This extraction leads to creating a list that contains all elements of the application that interact or communicate with the database API and therefore belong to the so called database access layer \autocite[3, 6]{Jahanshahi2018}.\newline
+In the next phase SQLBlock is in training mode. During this step SQLBlock is trained to recognize benign SQL queries that happen throughout the application mostly through unit tests. The goal is to create a mapping between the SQL query and the function that constructed the query. To achieve such a mapping first execution information is appended to each query. Then each incoming query is intercepted, SQLBlock records the query as well as the execution information. Through the parse tree of the application SQLBlock can extract information like all included nodes in the query. Furthermore the app also saves the type of SQL operation and the accessed tables of the database.\autocite[6]{Jahanshahi2018}. The result helps to establish a profile that defines all functions that have access to the database. The profile contains query descriptors for each function. Query descriptors contain information about the SQL operation (SELECT, INSERT,...), the current database table, the logical operators that are used in the query and the list of SQL functions that the query applies. These details are based on the previously collected data of the training phase. After the gathering of information and the mapping of functions to benign queries SQLBlock in enforcement mode restricts the access to the database. Each incoming query is checked against the profile and the specific query descriptors. If all components of the descriptor match the profile entry of the query then access to the database is granted \autocite[7]{Jahanshahi2018}. The capability of SQLBlock to provide protection to the database access of the application is based on the quality of the training phase and the followed mapping. SQLBlock is limited in regards to dynamically generated queries through user input and dynamic PHP features like the eval function. Due to the dynamic nature it is almost impossible to establish a complete profile including all possible SQL queries, which can lead to false positives \autocite[12]{Jahanshahi2018}.
+
+
 
 
 \autocite[]{Lam2008}, \autocite[]{Hosek2011} 
