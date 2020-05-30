@@ -1,14 +1,27 @@
 %for reference to this section
 \section{Introduction}
 \label{section:Introduction}
-In recent years, web applications have become more and more complex. Due to the growing size of applications it is difficult to satisfy all security requirements. Many applications handle confidential and sensitive data and have become a popular target for malicious attacks. A security breach could have severe consequences depending on the data that has been compromised.\newline The OWASP Foundation\footnote{ \url{https://owasp.org/www-project-top-ten/}} provides a top ten list of web application security risks. SQL Injection, cross-site scripting or sensitive data exposure are only a few of the many issues to consider while developing. But as the implementation of security measures are a very time-consuming job, many developers are lacking the time and/or knowledge to implement those security techniques. Many web applications deployed on the Internet contain severe security vulnerabilities. Almost half of the web applications reviewed by the Web Application Security Consortium contained vulnerabilities that are considered high risk \autocite[2]{Li2014}.
+In recent years, web applications have become more and more complex. Due to the growing size of applications it is difficult to satisfy all security requirements. Many applications handle confidential and sensitive data and have become a popular target for malicious attacks. A security breach could have severe consequences depending on the data that has been compromised.\newline
+The OWASP Foundation\footnote{ \url{https://owasp.org/www-project-top-ten/}} provides a top ten list of web application security risks. SQL Injection, cross-site scripting or sensitive data exposure are only a few of the many issues to consider while developing. But as the implementation of security measures are a very time-consuming job, many developers are lacking the time and/or knowledge to implement those security techniques. Many web applications deployed on the Internet contain severe security vulnerabilities. Almost half of the web applications reviewed by the Web Application Security Consortium contained vulnerabilities that are considered high risk \autocite[2]{Li2014}.
 So it comes as no surprise that many security analysis tools have been developed to support developers to scan their applications, reveal bugs or to confirm the security measures they have implemented.\newline There are different types of web security tools. Static analysis tools assess the application without executing the program. A static analysis tool analyses the code to search for e.g. syntatic errors. The analysis considers all code execution paths. Dynamic analysis, on the other hand, evaluates the app's behaviour during execution. For this kind of analysis specific attack vectors can be used to validate the source code. Some tools combine those techniques \autocite[]{Lam2008,Hosek2011}.\newline In this paper, I will give an overview of different types of web security tools, starting with a more detailed description of the top-ten web security risks and the distinction between static and dynamic analysis in the first chapter. Afterwards, I will explain in detail how static analysis tools like RubyX, Derailer or SPACE analyse applications \autocite[]{Chaudhuri2010, Near2014, Near2016}.  Other tools combine the static and dynamic approach, like PQL or SafeWeb, or provide black box testing with no access to the source code \autocite[]{Lam2008,Hosek2011,Araujo2018}.
 
-
-
-
 \section{Web Application Security Risks}
-\autocite[]{ElIdrissi2017}, \autocite[]{Li2014}
+As web applications are growing and becoming more complex also the target area for security attacks increases. Attackers adapt to the security measures developers have implemented and come up with new ways to infiltrate web applications.\newline
+\textcite[5]{Li2014} divide the most common web security risks in three categories: input validation vulnerability, session management vulnerability and application logic vulnerability. This is a basic classification of security threats that offer a good overview of what aspects to consider while developing. The Open Web Application Security Project (OWASP) is a well-known resource for the latest and most common security risk for web apps.\footnote{ \url{https://owasp.org/www-project-top-ten/}} This list contains a more detailed description of specific threats. The top three leading issues of latest version of 2017 are: 
+
+\begin{enumerate}
+    \item \textbf{Injection}: untrusted data is injected into commands or queries to perform unintended actions
+    \item \textbf{Broken Authentication}: Session management or authentication is compromised so that attackers can access user data or exploit the application with valid user credentials    
+    \item \textbf{Sensitive Data Exposure}: lacking proper protection and encryption of sensitive data such as credit card or healthcare information can lead to exposure and misuse of user data
+\end{enumerate}
+
+Without doubt responsible software development has to keep these aspects in mind when developing modern web solutions. Unfortunately many further security topics have to be considered while developing. Broken access control, cross-site scripting or vulnerable libraries or frameworks offer target points for attacks. Even implemented security measures may pose a threat. Security misconfigurations can be entry points for attacks.\newline
+
+%irgenwas mit deswegen tools und es gibt diese
+
+
+
+ 
 \section{Static Analysis Tools}
 Web Applications have been becoming more complex and growing in lines of code. To ensure the quality of the code especially with a lot of engineers working on the code base it is necessary to review and analyse code not only in regards to quality aspects but also to detect potential security vulnerabilities. However the sheer amount of code makes it impossible to completely to rely on individual coders to review the code manually. Automated analysis tools provide the service to check code for various vulnerabilities and help to detect weaknesses in the code. So called static analysis tools run through the source code without executing the program. One downside of static analysis tools is that each programming language needs a specifically designed tool. So there are already many static analysis tools in use like Rubocop\footnote{ \url{https://github.com/rubocop-hq/rubocop}} for Ruby or Pixy, a tool for PHP \autocite[]{Jovanovic2006}.\newline
 
