@@ -12,8 +12,13 @@ So it comes as no surprise that many security analysis tools have been developed
 \section{Static Analysis Tools}
 Web Applications have been becoming more complex and growing in lines of code. To ensure the quality of the code especially with a lot of engineers working on the code base it is necessary to review and analyse code not only in regards to quality aspects but also to detect potential security vulnerabilities. However the sheer amount of code makes it impossible to completely to rely on individual coders to review the code manually. Automated analysis tools provide the service to check code for various vulnerabilities and help to detect weaknesses in the code. So called static analysis tools run through the source code without executing the program. One downside of static analysis tools is that each programming language needs a specifically designed tool. So there are already many static analysis tools in use like Rubocop\footnote{ \url{https://github.com/rubocop-hq/rubocop}} for Ruby or Pixy, a tool for PHP \autocite[]{Jovanovic2006}.\newline
 
+%\begin{comment}
+%\autocite[]{Near2014} Derailer
+%\autocite[]{Chaudhuri2010}, \autocite[]{Bocic2014}, \autocite[]{Munetoh2013a}, %\autocite[]{Jovanovic2006}, \autocite[]{Munetoh2013}
+%\end{comment}
 
-\textcite[]{Maskur2019} recently introduced a tool that uses static analysis combined with a taint analysis method. What is taint analysis? As \textcite[]{Shannon2018} explains a variable that is marked as tainted means it is potentially dangerous. It may hold data from e.g. user input and therefore it could be harmful to your application. Three important components described in taint analysis are:
+
+\textcite[]{Maskur2019} recently introduced a tool that uses static analysis combined with a taint analysis method for PHP applications. What is taint analysis? As \textcite[]{Shannon2018} explains a variable that is marked as tainted means it is potentially dangerous. It may hold data from e.g. user input and therefore it could be harmful to your application. Three important components described in taint analysis are:
 
 \begin{enumerate}
     \item Source: everything that comes from outside your application scope, like HTTP parameters, user input or file uploads.
@@ -21,17 +26,55 @@ Web Applications have been becoming more complex and growing in lines of code. T
     \item Sanitizer: protects from untrusted input like esacping html characters or SQL query parameters
 \end{enumerate}
 
-If a source can go through a sink without sanitation this is considered a vulnerability.
+If a source can go through a sink without sanitation this is considered a vulnerability. The analysis tool of \textcite[]{Maskur2019} defines these components by using a knowledge base. This base contains a list of variables and functions that are registered as sources, sinks or sanitizers. The knowledge base is a config file within the application \autocite[3]{Maskur2019}. The described system will be an online tool available for developers. The programmer can input source code directly or upload file to be scanned. Then the result will be available to the developers inlcuding the details about the detected vulnerabilities. The security engineers of the tool modify and update the knowledge base of the system.\newline
 
-\autocite[]{Chaudhuri2010}, \autocite[]{Near2014}, \autocite[]{Bocic2014}, \autocite[]{Munetoh2013a}, \autocite[]{Jovanovic2006}, \autocite[]{Munetoh2013}
+When the user uploads the source code, the code will be parsed with PHPLY \footnote{ \url{https://github.com/viraptor/phply}} to create an Abstract Syntax Tree (AST). The AST contains nodes including information about the type and the expression of the code. Types can be assignments like variables or functions, switch etc. An example for parsing PHP code to an AST:
+
+\begin{listings}[language=PHP]
+
+    <?php
+     $name = $_GET["name"];
+     echo "Hello, ". $name;
+    ?>     
+    
+\end{listings}
+
+\begin{verbatim}
+('Assignment', 
+{'expr': ('ArrayOffset',
+    {'expr': u'name', 
+    'lineno': 2, 
+    'node': ('Variable', {'lineno': 2, 'name': u'$_GET'})}),
+'is_ref': False, 
+'lineno': 2, 
+'node': ('Variable', {'lineno': 2, 'name': u'$name'})}) 
+('Echo',
+{'lineno': 3, 
+'nodes': [('BinaryOp',
+    {'left': u'Hello, ', 
+    'lineno': 3,
+    'op': u'.', 
+    'right': ('Variable', {'lineno': 3, 'name': u'$name'})})]})
+\end{verbatim}
 
 
-\subsection{Symbolic Execution Tools}
-\autocite[]{Chaudhuri2010}, \autocite[]{Near2014}, \autocite[]{Near2012}, \autocite[]{Nijjar2011}, \autocite[]{Near2016}, \autocite[]{Jackson2002}, \autocite[]{Bocic2016}, \autocite[]{Cadar2011}, \autocite[]{Bocic2014}
+Taint analysis is applied to the AST and with the data from the knowledge base the tool can detect security vulnerabilities. Unfortunately the tool is limited in terms of object-oriented programming, so there are still false positives detected. \textcite[]{Maskur2019} mentioned the aspect of supporting object-oriented programming and adding more information to the knowledge base as issues for future improvement.
+
+
+%\begin{comment}
+%\subsection{Symbolic Execution Tools}
+%\autocite[]{Chaudhuri2010}, \autocite[]{Near2014}, \autocite[]{Near2012}, %\autocite[]{Nijjar2011}, \autocite[]{Near2016}, \autocite[]{Jackson2002}, %\autocite[]{Bocic2016}, \autocite[]{Cadar2011}, \autocite[]{Bocic2014}
+%\end{comment}
 
 
 \section{Dynamic Analysis Tools}
-\autocite[]{Yip2009}, \autocite[]{Felt2011}
+Modern web applications interact with the user and often create content dynamically. Static analysis tools cannot detect vulnerabilities that occur when the application is running. Dynamic tools focus on this aspect and scan web applications at runtime.\newline
+
+
+\textcite[]{Yip2009} introduced their prototype implementation RESIN for PHP and Python. RESIN uses policy objects and filter object as well as data tracking to prevent access violations and exposure of sensitive data. To use RESIN programmers have to adapt their code accordingly. Programmers themselves define the assertions contained in the policy objects. For example developers can define that a password is only disclosed to the authorized user or the administrator. This policy is then added to the password data. Every I/O channel of the application is observed by filter objects. Data that wants to go through the filters is stopped and the policy object evaluated. If the data is not cleared to pass through an exception is thrown before any data can be exposed.\autocite[3-7]{Yip2009}.\newline
+
+
+\autocite[]{Felt2011}
 
 \section{Hybrid Analysis Tools}
 Static analysis and dynamic analysis have their own individual drawbacks. As static analysis scans the code without executing the program, this means it can analyse the application quicker. But this automatically limits the extent to which the analyser can check the application. Dynamically created content and functions can not be analysed and therefore some vulnerabilities remain undetected. On the other hand dynamic analysis tools often are not provided with the source code and are only monitoring the execution. They rely on attacks vectors to identify vulnerabilities. If those vectors are wrongly constructed this could lead to false positives.
@@ -53,7 +96,11 @@ Due to the complex nature of many modern web application hybrid analysis tools t
 \noindent\textbf{Alternate Encoding}: Standard defense techniques of SQL queries scan for special characters to prevent malicious attacks. To overcome those obstacles attackers make use of other types of encoding to insert their manipulated strings. Different layers of the application handle alternate encoding differently. So a manipulated string could be undetected. As it is almost possible to secure an application against all existing encodings those kinds of attacks have been very successful \autocite[5]{Halfond2008}.\newline
 
 SQLBlock supports object-oriented programming and as mentioned before combines static and dynamic anaylsis methods. The app is focused on PHP applications and is available as a plugin for MySQL and PHP. The prototype implementation of SQLBlock goes through four different phases to evaluate and secure the web application \autocite[1, 5]{Jahanshahi2018}.\newline
+
+
 In the first phase SQLBlock identifies and analyses the database access layer within the PHP application, this means classes and interfaces that extend the database API like PDO in PHP. Through the static analysis SQLBlock creates a class dependency graph (CDG), that is a directed graph with vertices representing the classes and interfaces, and edges that are drawn if a vertex extends another vertex or implements the interface of the other vertex. After the CDG is fully constructed SQLBlock needs to find all classes and interfaces that are connected to the database API. This extraction leads to creating a list that contains all elements of the application that interact or communicate with the database API and therefore belong to the so called database access layer \autocite[3, 6]{Jahanshahi2018}.\newline
+
+
 In the next phase SQLBlock is in training mode. During this step SQLBlock is trained to recognize benign SQL queries that happen throughout the application mostly through unit tests. The goal is to create a mapping between the SQL query and the function that constructed the query. To achieve such a mapping first execution information is appended to each query. Then each incoming query is intercepted, SQLBlock records the query as well as the execution information. Through the parse tree of the application SQLBlock can extract information like all included nodes in the query. Furthermore the app also saves the type of SQL operation and the accessed tables of the database.\autocite[6]{Jahanshahi2018}. The result helps to establish a profile that defines all functions that have access to the database. The profile contains query descriptors for each function. Query descriptors contain information about the SQL operation (SELECT, INSERT,...), the current database table, the logical operators that are used in the query and the list of SQL functions that the query applies. These details are based on the previously collected data of the training phase. After the gathering of information and the mapping of functions to benign queries SQLBlock in enforcement mode restricts the access to the database. Each incoming query is checked against the profile and the specific query descriptors. If all components of the descriptor match the profile entry of the query then access to the database is granted \autocite[7]{Jahanshahi2018}. The capability of SQLBlock to provide protection to the database access of the application is based on the quality of the training phase and the followed mapping. SQLBlock is limited in regards to dynamically generated queries through user input and dynamic PHP features like the eval function. Due to the dynamic nature it is almost impossible to establish a complete profile including all possible SQL queries, which can lead to false positives \autocite[12]{Jahanshahi2018}.
 
 
