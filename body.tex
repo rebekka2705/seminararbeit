@@ -35,9 +35,9 @@ Web Applications have become more complex and growing in lines of code. To ensur
 \textcite[]{Maskur2019} recently introduced a tool that uses static analysis combined with a taint analysis method for PHP applications. What is taint analysis? As \textcite[]{Shannon2018} explains it is a variable that is marked as tainted, which means it is potentially dangerous. It may hold data from e.g. user input and therefore it could be harmful to your application. Three important components described in taint analysis are:
 
 \begin{enumerate}
-    \item Source: everything that comes from outside your application scope, like HTTP parameters, user input or file uploads.
-    \item Sink: executes an action that may cause damage to your system like SQL queries or functions that interact with your operating system
-    \item Sanitizer: protects from untrusted input like escaping html characters or SQL query parameters
+    \item \textbf{Source}: everything that comes from outside your application scope, like HTTP parameters, user input or file uploads.
+    \item \textbf{Sink}: executes an action that may cause damage to your system like SQL queries or functions that interact with your operating system
+    \item \textbf{Sanitizer}: protects from untrusted input like escaping html characters or SQL query parameters
 \end{enumerate}
 
 If a source can go through a sink without sanitation, it is considered a vulnerability. The analysis tool of \textcite[]{Maskur2019} defines these components by using a knowledge base. This base contains a list of variables and functions that are registered as sources, sinks or sanitizers. The knowledge base is a config file within the application \autocite[3]{Maskur2019}. The described system will be an online tool available for developers. The programmer can input source code directly or upload files to be scanned. Then the result will be available to the developers including the details about the detected vulnerabilities. The security engineers of the tool modify and update the knowledge base of the system.\newline
@@ -76,7 +76,7 @@ When the user uploads the source code, the code will be parsed with PHPLY \footn
     'right': ('Variable',{'lineno':3,
             'name':u'$name'})})]})
 \end{verbatim}
-    \caption{Abstract Syntax Tree}
+    \caption{Abstract Syntax Tree}  
     \label{AST}
 \end{figure}
 
@@ -136,8 +136,18 @@ In the next phase, SQLBlock is in training mode. During this step SQLBlock is tr
 
 The capability of SQLBlock to provide protection to the database access of the application is based on the quality of the training phase and the followed mapping. SQLBlock is limited in regards to dynamically generated queries through user input and dynamic PHP features like the \verb eval function. Due to the dynamic nature it is almost impossible to establish a complete profile including all possible SQL queries, which can lead to false positives \autocite[12]{Jahanshahi2018}.
 
-\section{Summary}
+\section{Conclusion}  
+Each of the aforementioned tools have been tested and evaluated. I would like to summarize the collected results. The static analysis tool from \textcite[]{Maskur2019} underwent two different testing phases. First it was tested against a simple self generated source code containing vulnerabilities. This was the basic check if the taint analysis can detect this vulnerability correctly \autocite[4f]{Maskur2019}. The second phase consisted of testing 20 PHP projects that have been included in the Common Vulnerabilities and Exposures List (CVE) due to injection or cross-site scripting. Applications in the CVE contain software vulnerabilities and are open source \footnote{ \url{https://www.cvedetails.com/}}. The tool could detect about 60\% of the vulnerabilities. The missed vulnerabilities required special techniques like bypassing the sanitizer function, two of them were not detected due to lacking OOP support and the rest contained functions unknown to the tool \autocite[5]{Maskur2019}. The testing results can be seen below: 
 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.75]{static_experiment_table.PNG}
+\caption{Testing Results \autocite[5]{Maskur2019}}
+\end{figure}
+
+\textcite[]{Maskur2019} mention a knowledge base which the tools needs to detect vulnerabilities. A better description of the knowledge base and the role of the security engineer that should improve the knowledge base would be helpful to assess the tool's potential. The test result only offer a superficial assessment of the static analysis tool and don't provide insights into the implementation.\newline  
+
+In contrast \textcite[1170-1180]{Medeiros2019} provide a thorough description of the architecture and the implementation principles of SEPTIC. SEPTIC is tested with sets of 66 code examples taken among other from sqlmap \autocite[]{DameleA.G.2014} or other papers \autocite[]{Ray2012, Ray2014}. Furthermore the tool is tested against four other anti-SQL-Injection tools and a web application firewall.
 
 % h = try to place the figure Here
 % t = try to place the figure at the Top of a page
