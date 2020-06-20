@@ -4,7 +4,6 @@
 In the past few years, web applications have become more and more complex. Due to the growing size of applications, it is difficult to satisfy all security requirements. Many applications handle confidential and sensitive data and have become a popular target for malicious attacks. A security breach could have severe consequences depending on the data that has been compromised.\newline
 The OWASP Foundation\footnote{ \url{https://owasp.org/www-project-top-ten/}} provides a top ten list of web application security risks. SQL Injection, cross-site scripting, or sensitive data exposure are only a few of the many issues to consider while developing. But as the implementation of security measures is a very time-consuming job, many developers lack the time and/or knowledge to implement those security techniques. Many web applications deployed on the Internet contain severe security vulnerabilities. Almost half of the web applications reviewed by the Web Application Security Consortium contained vulnerabilities that are considered high risk \autocite[2]{Li2014}.
 So it comes as no surprise that many security analysis tools have been developed to support developers to scan their applications, reveal bugs, or to confirm the security measures they have implemented.\newline There are different types of web security tools. Static analysis tools assess the application without executing the program. A static analysis tool analyses the code to search for e.g. syntactic errors. The analysis considers all code execution paths. Dynamic analysis, on the other hand, evaluates the app's behaviour during execution. For this kind of analysis specific policy objects attached to data can be used to ensure correct behaviour \autocite[]{Yip2009, Felt2011}. Some tools combine those static and analytic techniques \autocite[]{Araujo2018, Jahanshahi2018, Lam2008,Hosek2011}.\newline In this paper, I will give an overview of different types of web security tools and recent tools that have been introduced. I will begin with a closer look on the top-ten web security risks and vulnerabilities developers have to be aware of, followed by the general distinction between static and dynamic analysis. As there a many tools currently available for various programming languages, I selected a recently published tool for each category to be presented. This should provide a snapshot of the different approaches and focus points of the various tools.
-%Afterwards, I will explain in detail how static analysis tools like RubyX, Derailer or SPACE analyse applications \autocite[]{Chaudhuri2010, Near2014, Near2016}.  Other tools combine the static and dynamic approach, like PQL or SafeWeb, or provide black box testing with no access to the source code \autocite[]{Lam2008,Hosek2011,Araujo2018}.
 
 \section{Web Application Security Risks}
 As web applications are growing and becoming more complex, the target area for security attacks also increases. Attackers adapt to the security measures developers have implemented and come up with new ways to infiltrate web applications.\newline
@@ -24,13 +23,6 @@ In the following chapters, I will introduce tools for each analysis approach. Ea
 
 \section{Static Analysis Tools}
 Web Applications have become more complex and growing in lines of code. To ensure the quality of the code, especially with a lot of engineers working on the code base, it is necessary to review and analyse code not only in regards to quality aspects, but also to detect potential security vulnerabilities. However, the sheer amount of code makes it impossible to completely rely on individual coders to review the code manually. Automated analysis tools provide the service to check code for various vulnerabilities and help detect weaknesses in the code. So called static analysis tools run through the source code without executing the program. One downside of static analysis tools is that each programming language needs a specifically designed tool. So there are already many static analysis tools in use like Rubocop\footnote{ \url{https://github.com/rubocop-hq/rubocop}} for Ruby or Pixy, a tool for PHP \autocite[]{Jovanovic2006}. \newline 
-%symbolic execution?
-
-%\begin{comment}
-%\autocite[]{Near2014} Derailer
-%\autocite[]{Chaudhuri2010}, \autocite[]{Bocic2014}, \autocite[]{Munetoh2013a}, %\autocite[]{Jovanovic2006}, \autocite[]{Munetoh2013}
-%\end{comment}
-
 
 \textcite[]{Maskur2019} recently introduced a tool that uses static analysis combined with a taint analysis method for PHP applications. What is taint analysis? As \textcite[]{Shannon2018} explains it is a variable that is marked as tainted, which means it is potentially dangerous. It may hold data from e.g. user input and therefore it could be harmful to your application. Three important components described in taint analysis are:
 
@@ -97,7 +89,7 @@ Modern web applications interact with the user and often create content dynamica
 
 \textcite[]{Yip2009} introduced their prototype implementation RESIN for PHP and Python. RESIN uses policy objects and filter objects as well as data tracking to prevent access violations and exposure of sensitive data. To use RESIN programmers have to adapt their code accordingly. Programmers themselves define the assertions contained in the policy objects. For example, developers can define that a password is only disclosed to the authorized user or the administrator. This policy is then added to the password data. Every I/O channel of the application is observed by filter objects. Data that wants to go through the filters is stopped, and the policy object evaluated. If the data is not cleared to pass through, an exception is thrown before any data can be exposed \autocite[3-7]{Yip2009}. Another tool that is working with policy objects is GuardRails\autocite[]{Felt2011}. In the Ruby on Rails application the access control policies are directly added to the data model. The output of GuardRails is a new application that enforces those specified policies \autocite[2-4]{Felt2011}.\newline
 
-
+\subsection{SEPTIC}
 In contrast to previously mentioned dynamic analysis tools, SEPTIC (SElf-ProtecTIng databases from attaCks), developed by \textcite[]{Medeiros2019}, prevents malicious attacks from within the database. As the most common attacks include SQL injections or cross-site scripting that both target the database, SEPTIC is designed to handle attacks inside the database. SEPTIC is an additional feature of the database. It is implemented in MySQL, hence only the backend of the application has to be modified. SEPTIC is not bound to MySQL. It can also be implemented in MariaDB or PostgreSQL, as also recommended in the paper \autocite[1185]{Medeiros2019}.\newline
 The main goal of the implementation was to prevent, as the authors call it, \textit{semantic mismatch} \autocite[1168]{Medeiros2019}. This refers to ineffective sanitation of input data. How is this possible? Input data is usually sanitized through escaping-functions that escape special characters. Afterwards the sanitized strings is stored in the database. But if attackers use a different encoding of their malicious string, e.g URL encoded ( \%27 instead of ` ), then the function detects no special characters and cannot sanitize the string. When the database unsanitizes the string before storing it, the malicious code finds a way into the application despite implemented security features.\newline
 
@@ -136,8 +128,8 @@ In the next phase, SQLBlock is in training mode. During this step SQLBlock is tr
 
 The capability of SQLBlock to provide protection to the database access of the application is based on the quality of the training phase and the followed mapping. SQLBlock is limited in regards to dynamically generated queries through user input and dynamic PHP features like the \verb eval function. Due to the dynamic nature it is almost impossible to establish a complete profile including all possible SQL queries, which can lead to false positives \autocite[12]{Jahanshahi2018}.
 
-\section{Conclusion}  
-Each of the aforementioned tools have been tested and evaluated. I would like to summarize the collected results. The static analysis tool from \textcite[]{Maskur2019} underwent two different testing phases. First it was tested against a simple self generated source code containing vulnerabilities. This was the basic check if the taint analysis can detect this vulnerability correctly \autocite[4f]{Maskur2019}. The second phase consisted of testing 20 PHP projects that have been included in the Common Vulnerabilities and Exposures List (CVE) due to injection or cross-site scripting. Applications in the CVE contain software vulnerabilities and are open source \footnote{ \url{https://www.cvedetails.com/}}. The tool could detect about 60\% of the vulnerabilities. The missed vulnerabilities required special techniques like bypassing the sanitizer function, two of them were not detected due to lacking OOP support and the rest contained functions unknown to the tool \autocite[5]{Maskur2019}. The testing results can be seen below: 
+\section{Testing and Evaluation}  
+ The static analysis tool from \textcite[]{Maskur2019} underwent two different testing phases. First it was tested against a simple self generated source code containing vulnerabilities. This was the basic check if the taint analysis can detect this vulnerability correctly \autocite[4f]{Maskur2019}. The second phase consisted of testing 20 PHP projects that have been included in the Common Vulnerabilities and Exposures List (CVE) due to injection or cross-site scripting. Applications in the CVE contain software vulnerabilities and are open source \footnote{ \url{https://www.cvedetails.com/}}. The tool could detect about 60\% of the vulnerabilities. The missed vulnerabilities required special techniques like bypassing the sanitizer function, two of them were not detected due to lacking OOP support and the rest contained functions unknown to the tool \autocite[5]{Maskur2019}. The testing results can be seen below: 
 
 \begin{figure}[H]
 \centering
@@ -147,7 +139,40 @@ Each of the aforementioned tools have been tested and evaluated. I would like to
 
 \textcite[]{Maskur2019} mention a knowledge base which the tools needs to detect vulnerabilities. A better description of the knowledge base and the role of the security engineer that should improve the knowledge base would be helpful to assess the tool's potential. The test result only offer a superficial assessment of the static analysis tool and don't provide insights into the implementation.\newline  
 
-In contrast \textcite[1170-1180]{Medeiros2019} provide a thorough description of the architecture and the implementation principles of SEPTIC. SEPTIC is tested with sets of 66 code examples taken among other from sqlmap \autocite[]{DameleA.G.2014} or other papers \autocite[]{Ray2012, Ray2014}. Furthermore the tool is tested against four other anti-SQL-Injection tools and a web application firewall.
+In contrast \textcite[1170-1180]{Medeiros2019} provide a thorough description of the architecture and the implementation principles of SEPTIC. SEPTIC is tested with sets of 66 code examples taken, among other, from sqlmap \autocite[]{DameleA.G.2014} or other papers \autocite[]{Ray2012, Ray2014}. Furthermore the tool is tested against four other anti-SQL-Injection tools and a web application firewall. 61 of those sample were vulnerable code and five represented valid code. SEPTIC managed to detect all of the 61 attacks and did not deliver false positives regarding the valid code examples. Due to the training mode and learning about the benign query models SEPTIC was able to outperform the other tested security tools (see Figure \ref{septic1}).
+
+\begin{figure*}
+\centering
+\includegraphics[scale=0.65]{septic_results.PNG}
+\caption{SEPTIC:Code Sample Testing Results \autocite[1182]{Medeiros2019}}
+\label{septic1}
+\end{figure*}
+
+SEPTIC performed well in a testing environment. To confirm the capabilities in the real world, the analysis tools was also tested with ten different open source PHP web application and one non-web application. Each application, apart from two, have known SQL or stored injection vulnerabilities. \textcite[]{Medeiros2019} used the wapiti scanner \autocite[]{Surribas2016} to perform attacks on the applications. SEPTIC was able to detect all attacks and checking through the logs containing all attacks, the authors confirmed that there hadn't been any false positives or negatives. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.75]{septic_application_test.PNG}
+\caption{SEPTIC: Application Testing Results \autocite[1183]{Medeiros2019}}
+\end{figure}
+
+By building the query models SEPTIC is able to correctly detect valid dynamic queries. The most distinct feature about SEPTIC is that is a tool inside the DBMS. It is the first tool to be applied and perform directly in the database \autocite[1182f, 1186]{Medeiros2019} Currently SEPTIC is focused on SQL injection. Further updates including more types of attacks would be an important feature for future development. It is an interesting approach to add another security layer directly at the database as it is easy to implement in an existing application as the tools doesn't need to know details about the whole source code.\newline
+
+
+SQLBlock was evaluated through analysis of PHP web apps using Wordpress, Joomla, Drupal and Magento. Static analysis was performed on each application to identify the database access layer and then trained with each unit test included in each repository. Figure \ref{sqlblock} shows in column three each type of SQL-attack performed. SQLBlock could block any of those SQL attack types whereas SEPTIC could only block against four and only in Wordpress plugins \autocite[11]{Jahanshahi2018}. The static analysis phase, training mode and the creating-profile phase are performed offline. Static analysis and creating the profile are automatically executed by SQLBlock without further help by the administrator. The administrator only executes the unit test for the training mode. After completing the training mode SQLBlock is deployed as an MySQL plugin including a set of modified PHP database extensions. Upon launch of the application SQLBlock is protecting the app. False positives that were detected in especially Wordpress apps resulted from incomplete coverage during the training mode. Many dynamically generated queries rely on user input. Hence it is almost impossible to cover benign queries in training mode \autocite[10-12]{Jahanshahi2018}. Due to the thorough analysis in the first three steps especially the analysis of the database access layer, SQLBlock can create query descriptors. Those descriptors contain many details of each query and therefore cover a lot of SQL attacks in contrast to SEPTIC that relies purely on the SQL-Synthax. Another important feature of SQLBlock is the ability to be used in popular CMS as a plugin.
+
+
+\section{Summary}
+Each approach to securing a web application offer different advantages and disadvantages. But which tool to choose depends on the application and the developers. Static analysis can only cover vulnerabilities in the source code and can improve the code quality. As many attack areas can only be detected in execution dynamic analysis tools like SEPTIC could be more helpful. Hybrid tools like SQLBlock analyse apps more thoroughly and therefore can develop better defense mechanism than other tools. 
+
+\begin{figure*}
+\centering
+\includegraphics[scale=0.75]{sqlblock.PNG}
+\caption{SQLBlock: Testing results \autocite[12]{Jahanshahi2018}}
+\label{sqlblock}
+\end{figure*}
+
+\clearpage
 
 % h = try to place the figure Here
 % t = try to place the figure at the Top of a page
